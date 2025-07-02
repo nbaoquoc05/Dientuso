@@ -10,27 +10,37 @@ end nor_logic;
 
 architecture Behavioral of nor_logic is
 
+    -- NOR function
+    function nor2(a, b : STD_LOGIC) return STD_LOGIC is
+    begin
+        return not (a or b);
+    end function;
+
     signal A_not, B_not, C_not : STD_LOGIC;
-    signal A_not_B, A_not_C, B_C : STD_LOGIC;
-    signal term1, term2, term3, temp_or1, temp_or2, F_temp : STD_LOGIC;
+    signal AB, AC, BC : STD_LOGIC;
+    signal OR1, OR2 : STD_LOGIC;
 
 begin
 
-    A_not <= not (A or A);
+    
+    A_not <= nor2(A, A);
+    B_not <= nor2(B, B);
+    C_not <= nor2(C, C);
 
-    B_not <= not (B or B);
+    
+    AB <= nor2(nor2(A_not, A_not), B_not);
 
-    C_not <= not (C or C);
+    
+    AC <= nor2(nor2(A_not, A_not), C_not);
 
-    A_not_B <= not (A_not or B_not);
+    
+    BC <= nor2(B_not, C_not);
 
-    A_not_C <= not (A_not or C_not);
+    
+    OR1 <= nor2(AB, AC);
+    OR2 <= nor2(OR1, OR1); 
 
-    B_C <= not (B_not or C_not);
-
-
-    temp_or1 <= not (A_not_B or A_not_C);
-    temp_or2 <= not (temp_or1 or B_C);
-    F <= not (temp_or2 or temp_or2);
+  
+    F <= nor2(nor2(OR2, BC), nor2(OR2, BC));
 
 end Behavioral;
