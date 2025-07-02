@@ -1,0 +1,36 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity counter_000_010_100_111_jkff is
+    Port ( clk : in STD_LOGIC;
+           clr : in STD_LOGIC;
+           Q   : out STD_LOGIC_VECTOR (2 downto 0));
+end counter_000_010_100_111_jkff;
+
+architecture Behavioral of counter_000_010_100_111_jkff is
+    signal Q_int : STD_LOGIC_VECTOR (2 downto 0);
+begin
+
+    process(clk, clr)
+    begin
+        if clr = '1' then
+            Q_int <= "000";
+        elsif rising_edge(clk) then
+
+            if (Q_int(2) = '1') then
+                Q_int(0) <= not Q_int(0);
+            end if;
+
+            if (Q_int(0) = '0') then
+                Q_int(1) <= not Q_int(1);
+            end if;
+
+            if (Q_int(1) = '1' and Q_int(0) = '0') then
+                Q_int(2) <= not Q_int(2);
+            end if;
+        end if;
+    end process;
+
+    Q <= Q_int;
+
+end Behavioral;
