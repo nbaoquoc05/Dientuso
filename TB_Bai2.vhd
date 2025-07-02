@@ -1,42 +1,42 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity tb_nor_logic is
+entity tb_nor_logic_function is
+end tb_nor_logic_function;
 
-end tb_nor_logic;
+architecture behavior of tb_nor_logic_function is
 
-architecture behavior of tb_nor_logic is
-
-    component nor_logic
-        Port ( A : in  STD_LOGIC;
-               B : in  STD_LOGIC;
-               C : in  STD_LOGIC;
-               F : out STD_LOGIC);
+    component nor_logic_function
+        Port (
+            A : in  STD_LOGIC;
+            B : in  STD_LOGIC;
+            C : in  STD_LOGIC;
+            F : out STD_LOGIC
+        );
     end component;
-
-    signal A, B, C, F : STD_LOGIC;
+    signal A_tb, B_tb, C_tb : STD_LOGIC := '0';
+    signal F_tb             : STD_LOGIC;
 
 begin
 
-    uut: nor_logic Port map (
-        A => A,
-        B => B,
-        C => C,
-        F => F
-    );
+ 
+    uut: nor_logic_function
+        port map (
+            A => A_tb,
+            B => B_tb,
+            C => C_tb,
+            F => F_tb
+        );
 
+   
     stim_proc: process
     begin
-
-        A <= '0'; B <= '0'; C <= '0'; wait for 10 ns;
-        A <= '0'; B <= '0'; C <= '1'; wait for 10 ns;
-        A <= '0'; B <= '1'; C <= '0'; wait for 10 ns;
-        A <= '0'; B <= '1'; C <= '1'; wait for 10 ns;
-        A <= '1'; B <= '0'; C <= '0'; wait for 10 ns;
-        A <= '1'; B <= '0'; C <= '1'; wait for 10 ns;
-        A <= '1'; B <= '1'; C <= '0'; wait for 10 ns;
-        A <= '1'; B <= '1'; C <= '1'; wait for 10 ns;
-
+        for i in 0 to 7 loop
+            A_tb <= std_logic'val((i / 4) mod 2);
+            B_tb <= std_logic'val((i / 2) mod 2);
+            C_tb <= std_logic'val(i mod 2);
+            wait for 10 ns;
+        end loop;
         wait;
     end process;
 
